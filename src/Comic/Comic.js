@@ -1,7 +1,7 @@
 import React from 'react';
 import './Comic.css';
 
-const person = (props) => {
+const comic = (props) => {
     return (
         <div className="Comic">
             <h2>Comic title will go here</h2>
@@ -12,4 +12,4 @@ const person = (props) => {
     )
 }
 
-export default person;
+export default comic;
