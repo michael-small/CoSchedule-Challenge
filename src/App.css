@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+
+.errorMsg {
+  color: red;
+  background-color: white;
+  max-width: 20%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.comicSearch {
+  padding: 1rem;
+}
+
+input, button {
+  font-size: 1.5rem;
+}
