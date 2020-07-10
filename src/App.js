@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Comic from './Comic/Comic';
+import Favorites from './Favorites/Favorites';
 import ComicSearch from './ComicSearch/ComicSearch';
 import './App.css';
 
@@ -50,10 +51,7 @@ class App extends Component {
     return (
       <div className="App">
         <h1>bootleg xkcd</h1>
-        <div id="favoritesArea"> {/* TODO: Break into own component */}
-          <button>Create Fav <span role="img" aria-label="Heart">❤️</span></button>
-          <button>Delete Fav <span role="img" aria-label="Broken Heart">💔</span></button>
-        </div>
+        <Favorites />
         <form onSubmit={this.comicSearchSubmit} className="comicSearch"> {/* TODO: Break into own component */}
           <input 
             type="text" 
