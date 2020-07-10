@@ -50,11 +50,11 @@ class App extends Component {
     return (
       <div className="App">
         <h1>bootleg xkcd</h1>
-        <div id="favoritesArea">
-          <button>Create Fav ❤️</button>
-          <button>Delete Fav 💔</button>
+        <div id="favoritesArea"> {/* TODO: Break into own component */}
+          <button>Create Fav <span role="img" aria-label="Heart">❤️</span></button>
+          <button>Delete Fav <span role="img" aria-label="Broken Heart">💔</span></button>
         </div>
-        <form onSubmit={this.comicSearchSubmit} className="comicSearch"> {/* TODO: Break out into own component */}
+        <form onSubmit={this.comicSearchSubmit} className="comicSearch"> {/* TODO: Break into own component */}
           <input 
             type="text" 
             name="comicNumber" 
