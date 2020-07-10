@@ -4,7 +4,7 @@ import './ComicSearch.css';
 const comicSearch = (props) => {
     return (
         <div className="ComicSearch">
-            <p>Search comics here (search term undecided as of this commit):</p>
+            <p>Search comics here:</p>
             <input type="text" onChange={props.changed} value={props.name} />
         </div>
     )
