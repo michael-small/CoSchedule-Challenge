@@ -12,8 +12,8 @@
  * Module dependencies.
  */
 
-var express = require('express')
-	,http = require('http'),
+var express = require('express'),
+	http = require('http'),
 	bodyParser = require('body-parser');
 
 var app = express();
@@ -21,23 +21,32 @@ var app = express();
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'ejs');
 	app.use(bodyParser.json());
-
-app.use('development', function(){
-	app.use(express.errorhandler());
-});
+	app.use('development', function(){
+		app.use(express.errorhandler());
+	});
+	app.use(bodyParser.urlencoded({ extended: true }));
+	app.use(express.urlencoded({
+		extended: true
+	}))
 
 http.createServer(app).listen(app.get('port'), function(){
 	console.log("Express server listening on port " + app.get('port'));
 });
 
 app.get('/comic/:id', function(req, res) {
-	var comic = comics[req.param('id')];
+	let comic = comics[req.param('id')];
 	if (!comic) {
 		res.send('Comic not found', 404);
 	} else {
 		res.send({img: comic.img, alt: comic.alt, title: comic.title, month: comic.month, day: comic.day, year: comic.year, num: comic.num});
-		console.log("Retreived comic #" + comic.num + ' (' + comic.month + '/' + comic.day + '/' + comic.year + ')')
+		// console.log("Retreived comic #" + comic.num + ' (' + comic.month + '/' + comic.day + '/' + comic.year + ')')
 	}
+});
+
+app.post('/favoriteComic', function(req, res) {
+	let fav = req.body.fav;
+	res.send([fav.toString()]);
+	res.end("yes");
 });
 
 /**

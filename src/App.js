@@ -11,7 +11,8 @@ class App extends Component {
     this.state = {
       comic: [],
       comicNumber: '',
-      error: ''
+      error: '',
+      favorites: []
     };
   }
 
@@ -30,7 +31,19 @@ class App extends Component {
       console.error('Error:', error);
       this.setState({error: 'ERROR: Comic #' + comicNumber + ' not found'});
     });
-  }  
+  } 
+
+  favoriteComic = comic => {
+    fetch("/favoriteComic", {   
+      method: 'POST',
+      body: JSON.stringify({
+        fav: comic
+      }),
+      headers: {"Content-Type": "application/json"}})
+    .then(response => response.json())
+    .then(data => this.setState({ favorites: [...this.state.favorites, data[0]] }, () => console.log('posted: ', data)))
+    .then(() => console.log(this.state.favorites));
+  }
 
   comicSearchSubmit = (event) => {
     this.getComic(this.state.comicNumber);
@@ -51,7 +64,10 @@ class App extends Component {
     return (
       <div className="App">
         <h1>bootleg xkcd</h1>
-        <Favorites />
+        <Favorites 
+          click={() => this.favoriteComic(Number.parseFloat(this.state.comic.num))} 
+          favItems={this.state.favorites}
+        />
         <form onSubmit={this.comicSearchSubmit} className="comicSearch"> {/* TODO: Break into own component */}
           <input 
             type="text" 
