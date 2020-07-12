@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import './Favorites.css';
+import Favorite from '../Favorite/Favorite.js';
+import './FavoritesArea.css';
 
 export class Favorites extends Component {
 
@@ -8,11 +9,12 @@ export class Favorites extends Component {
             <div className="Favorites">
                 <button onClick={this.props.clickCreate}>Create Fav <span role="img" aria-label="Heart">❤️</span></button>
                 <button onClick={this.props.clickDelete}>Delete Fav <span role="img" aria-label="Broken Heart">💔</span></button>
-                <div>Favorite comics:
+                {/* <div>Favorite comics:
                     {this.props.favItems.map((favorite, index) => (
                     <button key={index}> {favorite} X </button>
                     ))}
-                </div>
+                </div> */}
+                <Favorite></Favorite>
             </div>
         )
     }

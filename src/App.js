@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import Comic from './Comic/Comic';
-import Favorites from './Favorites/Favorites';
-import ComicSearch from './ComicSearch/ComicSearch';
+import Favorites from './FavoritesArea/FavoritesArea';
 import './App.css';
 import Axios from 'axios';
-import favorites from './Favorites/Favorites';
 
 class App extends Component {
 
