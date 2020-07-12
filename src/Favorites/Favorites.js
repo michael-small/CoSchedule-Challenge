@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './Favorites.css';
 
-const favorites = (props) => {
+export class Favorites extends Component {
 
-    return (
-        <div className="Favorites">
-            <button onClick={props.click}>Create Fav <span role="img" aria-label="Heart">❤️</span></button>
-            <button>Delete Fav <span role="img" aria-label="Broken Heart">💔</span></button>
-            <p>Favorite comics:
-                {props.favItems.map((favorite, index) => (
-                <span key={index}> {favorite} X </span>
-                ))}
-            </p>
-        </div>
-    )
+    render () {
+        return (
+            <div className="Favorites">
+                <button onClick={this.props.clickCreate}>Create Fav <span role="img" aria-label="Heart">❤️</span></button>
+                <button onClick={this.props.clickDelete}>Delete Fav <span role="img" aria-label="Broken Heart">💔</span></button>
+                <div>Favorite comics:
+                    {this.props.favItems.map((favorite, index) => (
+                    <button key={index}> {favorite} X </button>
+                    ))}
+                </div>
+            </div>
+        )
+    }
 }
 
-export default favorites;
+export default Favorites;

@@ -43,9 +43,23 @@ app.get('/comic/:id', function(req, res) {
 	}
 });
 
+var favorites = [];
+
 app.post('/favoriteComic', function(req, res) {
 	let fav = req.body.fav;
-	res.send([fav.toString()]);
+	favorites.push(fav);
+	favorites = favorites.map(Number); //TODO: fix
+	favorites.sort();
+	res.send([fav]);
+	console.log("favorites after adding: " + favorites);
+	res.end("yes");
+});
+
+app.delete('/deleteFavoriteComic/:id', function(req, res) {
+	let fav = req.body.id;
+	
+	res.json({fav});
+	
 	res.end("yes");
 });
 

@@ -3,6 +3,8 @@ import Comic from './Comic/Comic';
 import Favorites from './Favorites/Favorites';
 import ComicSearch from './ComicSearch/ComicSearch';
 import './App.css';
+import Axios from 'axios';
+import favorites from './Favorites/Favorites';
 
 class App extends Component {
 
@@ -34,7 +36,10 @@ class App extends Component {
   } 
 
   favoriteComic = comic => {
-    fetch("/favoriteComic", {   
+    if(this.state.favorites.includes(comic)) {
+      console.log('inludes');
+    }
+    fetch("/favoriteComic/", {   
       method: 'POST',
       body: JSON.stringify({
         fav: comic
@@ -42,7 +47,15 @@ class App extends Component {
       headers: {"Content-Type": "application/json"}})
     .then(response => response.json())
     .then(data => this.setState({ favorites: [...this.state.favorites, data[0]] }, () => console.log('posted: ', data)))
-    .then(() => console.log(this.state.favorites));
+    .then(() => console.log("favorites: " + this.state.favorites));
+}
+
+  deleteFavoriteComic = comic => {
+    Axios.delete("/deleteFavoriteComic/" + comic).then(res =>
+      this.setState({
+        favorites: [...this.state.favorites.filter(fav => fav !== comic)]
+      })
+    ).then(() => console.log("favs after delete: " + this.state.favorites))
   }
 
   comicSearchSubmit = (event) => {
@@ -65,8 +78,11 @@ class App extends Component {
       <div className="App">
         <h1>bootleg xkcd</h1>
         <Favorites 
-          click={() => this.favoriteComic(Number.parseFloat(this.state.comic.num))} 
+          clickCreate={() => this.favoriteComic(this.state.comic.num)} 
+          clickDelete={() => this.deleteFavoriteComic(Number.parseFloat(this.state.comic.num))} 
           favItems={this.state.favorites}
+          comicNum={this.state.comicNumber}
+          delFavorite={() => this.deleteFavoriteComic}
         />
         <form onSubmit={this.comicSearchSubmit} className="comicSearch"> {/* TODO: Break into own component */}
           <input 
