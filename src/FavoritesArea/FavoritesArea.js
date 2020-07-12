@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Favorite from '../Favorite/Favorite.js';
 import './FavoritesArea.css';
 
-export class Favorites extends Component {
+export class FavoritesArea extends Component {
 
     render () {
         return (
@@ -14,10 +14,11 @@ export class Favorites extends Component {
                     <button key={index}> {favorite} X </button>
                     ))}
                 </div> */}
+
                 <Favorite></Favorite>
             </div>
         )
     }
 }
 
-export default Favorites;
+export default FavoritesArea;
