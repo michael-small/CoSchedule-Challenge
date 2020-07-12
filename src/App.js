@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Comic from './Comic/Comic';
+import CommentArea from './CommentArea/CommentArea';
 import ComicSearch from './ComicSearch/ComicSearch';
 import './App.css';
 
@@ -47,9 +48,10 @@ class App extends Component {
     if(this.state.error!=='') {
       errorBox = <p className="errorMsg">{this.state.error}</p>
     }
+
     return (
       <div className="App">
-      <h1>bootleg xkcd</h1>
+        <h1>bootleg xkcd</h1>
         <form onSubmit={this.comicSearchSubmit} className="comicSearch"> {/* TODO: Break out into own component */}
           <input 
             type="text" 
@@ -75,6 +77,7 @@ class App extends Component {
           day= {this.state.comic.day}
           year= {this.state.comic.year}
         />
+        <CommentArea />
       </div>
     );
   }
