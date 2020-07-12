@@ -46,14 +46,14 @@ class App extends Component {
     .then(response => response.json())
     .then(data => this.setState({ favorites: [...this.state.favorites, data[0]] }, () => console.log('posted: ', data)))
     .then(() => console.log("favorites: " + this.state.favorites));
-}
+  }
 
   deleteFavoriteComic = comic => {
     Axios.delete("/deleteFavoriteComic/" + comic).then(res =>
       this.setState({
         favorites: [...this.state.favorites.filter(fav => fav !== comic)]
       })
-    ).then(() => console.log("favs after delete: " + this.state.favorites))
+    );
   }
 
   comicSearchSubmit = (event) => {
@@ -79,21 +79,18 @@ class App extends Component {
           clickCreate={() => this.favoriteComic(this.state.comic.num)} 
           clickDelete={() => this.deleteFavoriteComic(Number.parseFloat(this.state.comic.num))} 
           favorites={this.state.favorites}
-          delFavorite={this.deleteFavoriteComic}
-        />
+          delFavorite={this.deleteFavoriteComic}/>
         <form onSubmit={this.comicSearchSubmit} className="comicSearch"> {/* TODO: Break into own component */}
           <input 
             type="text" 
             name="comicNumber" 
             placeholder="Seach by comic number" 
             value={this.state.comicNumber}
-            onChange={this.onChange}
-          />
+            onChange={this.onChange}/>
           <input 
             type="submit" 
             value="Submit" 
-            className="btn"
-          />
+            className="btn"/>
         </form>
         <button onClick={() => this.getComic(this.getRandomComicNum(2330))}>Random</button>
         {errorBox}
@@ -104,8 +101,7 @@ class App extends Component {
           num= {this.state.comic.num}
           month= {this.state.comic.month}
           day= {this.state.comic.day}
-          year= {this.state.comic.year}
-        />
+          year= {this.state.comic.year}/>
       </div>
     );
   }
