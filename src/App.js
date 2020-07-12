@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Comic from './Comic/Comic';
-import Favorites from './FavoritesArea/FavoritesArea';
+import FavoritesArea from './FavoritesArea/FavoritesArea';
 import './App.css';
 import Axios from 'axios';
 
@@ -75,12 +75,11 @@ class App extends Component {
     return (
       <div className="App">
         <h1>bootleg xkcd</h1>
-        <Favorites 
+        <FavoritesArea 
           clickCreate={() => this.favoriteComic(this.state.comic.num)} 
           clickDelete={() => this.deleteFavoriteComic(Number.parseFloat(this.state.comic.num))} 
-          favItems={this.state.favorites}
-          comicNum={this.state.comicNumber}
-          delFavorite={() => this.deleteFavoriteComic}
+          favorites={this.state.favorites}
+          delFavorite={this.deleteFavoriteComic}
         />
         <form onSubmit={this.comicSearchSubmit} className="comicSearch"> {/* TODO: Break into own component */}
           <input 

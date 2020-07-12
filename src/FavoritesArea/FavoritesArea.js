@@ -9,13 +9,9 @@ export class FavoritesArea extends Component {
             <div className="Favorites">
                 <button onClick={this.props.clickCreate}>Create Fav <span role="img" aria-label="Heart">❤️</span></button>
                 <button onClick={this.props.clickDelete}>Delete Fav <span role="img" aria-label="Broken Heart">💔</span></button>
-                {/* <div>Favorite comics:
-                    {this.props.favItems.map((favorite, index) => (
-                    <button key={index}> {favorite} X </button>
-                    ))}
-                </div> */}
-
-                <Favorite></Favorite>
+                {this.props.favorites.map((favorite, index) => (
+                    <Favorite key={index} favorite={favorite} comicNumber={favorite.comicNumber} delFavorite={this.props.delFavorite}/>
+                ))}
             </div>
         )
     }

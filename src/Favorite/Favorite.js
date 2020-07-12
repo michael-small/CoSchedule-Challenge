@@ -6,7 +6,8 @@ export class Favorite extends Component {
     render () {
         return (
             <div className="Favorite">
-                <p>Individual favorite</p>
+                {this.props.favorite}
+                <button onClick={this.props.delFavorite.bind(this, this.props.favorite)}>X</button>
             </div>
         )
     }
