@@ -22,6 +22,15 @@ class App extends Component {
     this.getComic('2330');
   }
 
+  getRandomComicNum(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
+  comicSearchSubmit = (event) => {
+    this.getComic(this.state.comicNumber);
+    event.preventDefault();
+  }  
+
   getComic = comicNumber => {
     let comicUrl = '/comic/' + comicNumber;
     this.setState({error: ''});
@@ -45,7 +54,7 @@ class App extends Component {
     .then(response => response.json())
     .then(data => this.setState({ comments: [...this.state.comments, data[0]] }, () => console.log('posted: ', data)))
     .then(() => console.log("comments: " + this.state.comments))
-    .then(() => this.setState({comment: ""}));
+    .then(() => this.setState({comment: ''}))
   }
 
   deleteComment = comment => {
@@ -56,19 +65,14 @@ class App extends Component {
     );
   }
 
-  comicSearchSubmit = (event) => {
-    this.getComic(this.state.comicNumber);
+  commentSubmit = (event) => {
+    this.addComment(this.state.comment);
     event.preventDefault();
   }
 
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
     e.preventDefault();
-  }
-    
-
-  getRandomComicNum(max) {
-    return Math.floor(Math.random() * Math.floor(max));
   }
 
   render () {
@@ -108,7 +112,7 @@ class App extends Component {
         <CommentArea 
           comment={this.state.comment}
           onChange={this.onChange}
-          clickCreate={() => this.addComment(this.state.comment)} 
+          clickCreate={this.commentSubmit} 
           comments={this.state.comments}
           delComment={this.deleteCommic}
         />
