@@ -21,7 +21,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.getComic('2330');
+    this.getComic('1346');
   }
 
   getRandomComic = (event) => {
