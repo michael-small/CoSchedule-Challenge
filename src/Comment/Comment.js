@@ -6,9 +6,9 @@ export class Comment extends Component {
     render () {
         return (
             <div className="comment">
-                <p><b>Michael Small</b></p>
-                {this.props.comment}
-                {/* <button onClick={this.props.delComment.bind(this, this.props.comment)}>X</button> */}
+                <b>Michael Small</b>
+                <button onClick={this.props.delComment.bind(this, this.props.comment)} className="deleteComment">X</button>
+                <p>{this.props.comment}</p>
             </div>
         )
     }

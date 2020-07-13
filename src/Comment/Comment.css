@@ -1,3 +1,9 @@
 .comment {
     padding: 1rem;
 }
+
+.deleteComment {
+    align-content: right;
+    display: inline;
+    color: red;
+}
