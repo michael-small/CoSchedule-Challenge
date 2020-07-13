@@ -19,7 +19,7 @@ class ComicSearch extends Component {
                         onChange={this.props.onChange}
                     />
                 </form>
-                <button onClick={() => this.getComic(this.getRandomComicNum(2330))}>Random</button>
+                <button onClick={this.props.getRandomComic}>Random</button>
                 {errorBox}
             </div>
         )

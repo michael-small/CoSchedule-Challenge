@@ -22,8 +22,10 @@ class App extends Component {
     this.getComic('2330');
   }
 
-  getRandomComicNum(max) {
-    return Math.floor(Math.random() * Math.floor(max));
+  getRandomComic = (event) => {
+    let random = Math.floor(Math.random() * Math.floor(2330));
+    this.getComic(random)
+    event.preventDefault();
   }
 
   comicSearchSubmit = (event) => {
@@ -84,6 +86,7 @@ class App extends Component {
           error={this.state.error}
           comicNumber={this.state.comicNumber}
           onChange={this.onChange}
+          getRandomComic={this.getRandomComic}
         />
 
         <Comic 
