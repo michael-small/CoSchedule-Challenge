@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './ComicSearch.css';
 
-const comicSearch = (props) => {
-    return (
-        <div className="ComicSearch">
-            <p>Search comics here:</p>
-            <input type="text" onChange={props.changed} value={props.name} />
-        </div>
-    )
+class ComicSearch extends Component {
+    render () {
+        return (
+            <div className="ComicSearch">
+                <p>Search comics here:</p>
+                <input type="text" onChange={this.props.changed} value={this.props.name} />
+            </div>
+        )
+    }
+
 }
 
-export default comicSearch;
+export default ComicSearch;
