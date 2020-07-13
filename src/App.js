@@ -56,9 +56,13 @@ class App extends Component {
       }),
       headers: {"Content-Type": "application/json"}})
     .then(response => response.json())
-    .then(data => this.setState({ comments: [...this.state.comments, data[0]] }, () => console.log('posted: ', data)))
+    .then(data => this.setState({ comments: [...this.state.comments, data[0]] }))
     .then(() => console.log("comments: " + this.state.comments))
     .then(() => this.setState({comment: ''}))
+    .catch((error) => {
+      console.error('Error:', error);
+      this.setState({error: 'ERROR: cannot add comment'});
+    });
   }
     
   favoriteComic = comic => {
@@ -72,8 +76,12 @@ class App extends Component {
       }),
       headers: {"Content-Type": "application/json"}})
     .then(response => response.json())
-    .then(data => this.setState({ favorites: [...this.state.favorites, data[0]] }, () => console.log('posted: ', data)))
-    .then(() => console.log("favorites: " + this.state.favorites));
+    .then(data => this.setState({ favorites: [...this.state.favorites, data[0]] }))
+    .then(() => console.log("favorites: " + this.state.favorites))
+    .catch((error) => {
+      console.error('Error:', error);
+      this.setState({error: 'ERROR: Could not favorite this comic'});
+    });
   }
 
   deleteFavoriteComic = comic => {
@@ -137,7 +145,7 @@ class App extends Component {
           onChange={this.onChange}
           clickCreate={this.commentSubmit} 
           comments={this.state.comments}
-          delComment={this.deleteCommic}
+          delComment={this.deleteComment}
         />
       </div>
     );
