@@ -40,23 +40,17 @@ app.get('/comic/:id', function(req, res) {
 	}
 });
 
-var comments = [];
-
 app.post('/addComment', function(req, res) {
 	let comment = req.body.com;
-	comments.push(comment);
-	comments = comments.map(Number); //TODO: fix
-	comments.sort();
+	console.log("comment added: " + comment);
 	res.send([comment]);
-	console.log("comments after adding: " + comments);
 	res.end("yes");
 });
 
 app.delete('/deleteComment/:id', function(req, res) {
 	let com = req.body.id;
-	
+	console.log("comment deleted: " + com);
 	res.json({com});
-	
 	res.end("yes");
 });
 
