@@ -10,12 +10,17 @@ class CommentArea extends Component {
                 <h2>Comments</h2>
                 <div className="commentArea">
                     <form onSubmit={this.props.clickCreate} className="comicSearch"> {/* TODO: Break out into own component */}
-                        <input 
+                        <textarea 
                             type="text" 
                             name="comment" 
-                            placeholder="Add comment" 
+                            placeholder="Add comment 💬" 
                             value={this.props.comment}
                             onChange={this.props.onChange}
+                        />
+                        <input 
+                        type="submit" 
+                        value="Submit Comment" 
+                        className="btn"
                         />
                     </form>
                     <div>

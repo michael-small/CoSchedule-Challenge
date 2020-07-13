@@ -16,3 +16,11 @@
     border: 2px solid black;
     margin-top: 1rem;
 }
+
+.commentArea textarea {
+    width: 90%;
+}
+
+::-webkit-input-placeholder {
+    font-size: 1.5rem;
+  }
