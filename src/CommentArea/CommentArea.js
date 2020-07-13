@@ -9,7 +9,7 @@ class CommentArea extends Component {
             <div style={{'marginBottom': '1rem'}}>
                 <h2>Comments</h2>
                 <div className="commentArea">
-                    <form onSubmit={() => this.props.clickCreate(this.value)} className="comicSearch"> {/* TODO: Break out into own component */}
+                    <form onSubmit={this.props.clickCreate} className="comicSearch"> {/* TODO: Break out into own component */}
                         <input 
                             type="text" 
                             name="comment" 
@@ -18,7 +18,6 @@ class CommentArea extends Component {
                             onChange={this.props.onChange}
                         />
                     </form>
-                    <button onClick={this.props.clickCreate}>Create Comment</button>
                     <div>
                         {this.props.comments.map((comment, index) => (
                         <Comment key={index} 
