@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Comic from './Comic/Comic';
+import CommentArea from './CommentArea/CommentArea';
+import ComicSearch from './ComicSearch/ComicSearch';
 import FavoritesArea from './FavoritesArea/FavoritesArea';
 import './App.css';
 import Axios from 'axios';
@@ -11,6 +13,8 @@ class App extends Component {
     this.state = {
       comic: [],
       comicNumber: '',
+      comments: [],
+      comment: ''
       error: '',
       favorites: []
     };
@@ -19,6 +23,17 @@ class App extends Component {
   componentDidMount() {
     this.getComic('2330');
   }
+
+  getRandomComic = (event) => {
+    let random = Math.floor(Math.random() * Math.floor(2330));
+    this.getComic(random)
+    event.preventDefault();
+  }
+
+  comicSearchSubmit = (event) => {
+    this.getComic(this.state.comicNumber);
+    event.preventDefault();
+  }  
 
   getComic = comicNumber => {
     let comicUrl = '/comic/' + comicNumber;
@@ -33,6 +48,17 @@ class App extends Component {
     });
   } 
 
+  addComment = comment => {
+    fetch("/addComment/", {   
+      method: 'POST',
+      body: JSON.stringify({
+        com: comment
+      }),
+      headers: {"Content-Type": "application/json"}})
+    .then(response => response.json())
+    .then(data => this.setState({ comments: [...this.state.comments, data[0]] }, () => console.log('posted: ', data)))
+    .then(() => console.log("comments: " + this.state.comments))
+    .then(() => this.setState({comment: ''}))
   favoriteComic = comic => {
     if(this.state.favorites.includes(comic)) {
       console.log('inludes');
@@ -61,39 +87,36 @@ class App extends Component {
     event.preventDefault();
   }
 
-  onChange = (e) => this.setState({ [e.target.name]: e.target.value });
+  deleteComment = comment => {
+    Axios.delete("/deleteComment/" + comment).then(res =>
+      this.setState({
+        comments: [...this.state.comments.filter(com => com !== comment)]
+      })
+    );
+  }
 
-  getRandomComicNum(max) {
-    return Math.floor(Math.random() * Math.floor(max));
+  commentSubmit = (event) => {
+    this.addComment(this.state.comment);
+    event.preventDefault();
+  }
+
+  onChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+    e.preventDefault();
   }
 
   render () {
-    let errorBox;
-    if(this.state.error!=='') {
-      errorBox = <p className="errorMsg">{this.state.error}</p>
-    }
     return (
       <div className="App">
         <h1>bootleg xkcd</h1>
-        <FavoritesArea 
-          clickCreate={() => this.favoriteComic(this.state.comic.num)} 
-          clickDelete={() => this.deleteFavoriteComic(Number.parseFloat(this.state.comic.num))} 
-          favorites={this.state.favorites}
-          delFavorite={this.deleteFavoriteComic}/>
-        <form onSubmit={this.comicSearchSubmit} className="comicSearch"> {/* TODO: Break into own component */}
-          <input 
-            type="text" 
-            name="comicNumber" 
-            placeholder="Seach by comic number" 
-            value={this.state.comicNumber}
-            onChange={this.onChange}/>
-          <input 
-            type="submit" 
-            value="Submit" 
-            className="btn"/>
-        </form>
-        <button onClick={() => this.getComic(this.getRandomComicNum(2330))}>Random</button>
-        {errorBox}
+        <ComicSearch 
+          comicSearchSubmit={this.comicSearchSubmit}
+          error={this.state.error}
+          comicNumber={this.state.comicNumber}
+          onChange={this.onChange}
+          getRandomComic={this.getRandomComic}
+        />
+
         <Comic 
           img= {this.state.comic.img}
           alt= {this.state.comic.alt}
@@ -101,7 +124,15 @@ class App extends Component {
           num= {this.state.comic.num}
           month= {this.state.comic.month}
           day= {this.state.comic.day}
-          year= {this.state.comic.year}/>
+          year= {this.state.comic.year}
+        />
+        <CommentArea 
+          comment={this.state.comment}
+          onChange={this.onChange}
+          clickCreate={this.commentSubmit} 
+          comments={this.state.comments}
+          delComment={this.deleteCommic}
+        />
       </div>
     );
   }

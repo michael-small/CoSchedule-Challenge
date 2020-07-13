@@ -43,6 +43,20 @@ app.get('/comic/:id', function(req, res) {
 	}
 });
 
+app.post('/addComment', function(req, res) {
+	let comment = req.body.com;
+	console.log("comment added: " + comment);
+	res.send([comment]);
+	res.end("yes");
+});
+
+app.delete('/deleteComment/:id', function(req, res) {
+	let com = req.body.id;
+	console.log("comment deleted: " + com);
+	res.json({com});
+	res.end("yes");
+});
+
 var favorites = [];
 
 app.post('/favoriteComic', function(req, res) {
