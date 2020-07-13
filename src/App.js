@@ -3,6 +3,7 @@ import Comic from './Comic/Comic';
 import CommentArea from './CommentArea/CommentArea';
 import ComicSearch from './ComicSearch/ComicSearch';
 import './App.css';
+import Axios from 'axios';
 
 class App extends Component {
 
@@ -11,7 +12,9 @@ class App extends Component {
     this.state = {
       comic: [],
       comicNumber: '',
-      error: ''
+      error: '',
+      comments: [],
+      comment: ''
     };
   }
 
@@ -32,12 +35,36 @@ class App extends Component {
     });
   }  
 
+  addComment = comment => {
+    fetch("/addComment/", {   
+      method: 'POST',
+      body: JSON.stringify({
+        com: comment
+      }),
+      headers: {"Content-Type": "application/json"}})
+    .then(response => response.json())
+    .then(data => this.setState({ comments: [...this.state.comments, data[0]] }, () => console.log('posted: ', data)))
+    .then(() => console.log("comments: " + this.state.comments));
+  }
+
+  deleteComment = comment => {
+    Axios.delete("/deleteComment/" + comment).then(res =>
+      this.setState({
+        comments: [...this.state.comments.filter(com => com !== comment)]
+      })
+    );
+  }
+
   comicSearchSubmit = (event) => {
     this.getComic(this.state.comicNumber);
     event.preventDefault();
   }
 
-  onChange = (e) => this.setState({ [e.target.name]: e.target.value });
+  onChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+    e.preventDefault();
+  }
+    
 
   getRandomComicNum(max) {
     return Math.floor(Math.random() * Math.floor(max));
@@ -77,7 +104,13 @@ class App extends Component {
           day= {this.state.comic.day}
           year= {this.state.comic.year}
         />
-        <CommentArea />
+        <CommentArea 
+          comment={this.state.comment}
+          onChange={this.onChange}
+          clickCreate={() => this.addComment(this.state.comment)} 
+          comments={this.state.comments}
+          delComment={this.deleteCommic}
+        />
       </div>
     );
   }
