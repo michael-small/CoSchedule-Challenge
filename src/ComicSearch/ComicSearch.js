@@ -12,7 +12,7 @@ class ComicSearch extends Component {
             <div className="ComicSearch">
                 <form onSubmit={this.props.comicSearchSubmit} className="comicSearch"> {/* TODO: Break out into own component */}
                     <input 
-                        type="text" 
+                        type="number" 
                         name="comicNumber" 
                         placeholder="Seach by comic number 🔍" 
                         value={this.props.comicNumber}
