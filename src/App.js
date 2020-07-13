@@ -76,30 +76,16 @@ class App extends Component {
   }
 
   render () {
-    let errorBox;
-    if(this.state.error!=='') {
-      errorBox = <p className="errorMsg">{this.state.error}</p>
-    }
-
     return (
       <div className="App">
         <h1>bootleg xkcd</h1>
-        <form onSubmit={this.comicSearchSubmit} className="comicSearch"> {/* TODO: Break out into own component */}
-          <input 
-            type="text" 
-            name="comicNumber" 
-            placeholder="Seach by comic number" 
-            value={this.state.comicNumber}
-            onChange={this.onChange}
-          />
-          <input 
-            type="submit" 
-            value="Submit" 
-            className="btn"
-          />
-        </form>
-        <button onClick={() => this.getComic(this.getRandomComicNum(2330))}>Random</button>
-        {errorBox}
+        <ComicSearch 
+          comicSearchSubmit={this.comicSearchSubmit}
+          error={this.state.error}
+          comicNumber={this.state.comicNumber}
+          onChange={this.onChange}
+        />
+
         <Comic 
           img= {this.state.comic.img}
           alt= {this.state.comic.alt}

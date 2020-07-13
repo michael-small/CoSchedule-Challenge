@@ -3,10 +3,24 @@ import './ComicSearch.css';
 
 class ComicSearch extends Component {
     render () {
+        let errorBox;
+        if(this.props.error!=='') {
+          errorBox = <p className="errorMsg">{this.props.error}</p>
+        }
+
         return (
             <div className="ComicSearch">
-                <p>Search comics here:</p>
-                <input type="text" onChange={this.props.changed} value={this.props.name} />
+                <form onSubmit={this.props.comicSearchSubmit} className="comicSearch"> {/* TODO: Break out into own component */}
+                    <input 
+                        type="text" 
+                        name="comicNumber" 
+                        placeholder="Seach by comic number 🔍" 
+                        value={this.props.comicNumber}
+                        onChange={this.props.onChange}
+                    />
+                </form>
+                <button onClick={() => this.getComic(this.getRandomComicNum(2330))}>Random</button>
+                {errorBox}
             </div>
         )
     }
