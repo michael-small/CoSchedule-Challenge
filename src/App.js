@@ -67,7 +67,7 @@ class App extends Component {
     
   favoriteComic = comic => {
     if(this.state.favorites.includes(comic)) {
-      console.log('inludes');
+      return;
     }
     fetch("/favoriteComic/", {   
       method: 'POST',
