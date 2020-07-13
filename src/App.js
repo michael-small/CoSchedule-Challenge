@@ -44,7 +44,8 @@ class App extends Component {
       headers: {"Content-Type": "application/json"}})
     .then(response => response.json())
     .then(data => this.setState({ comments: [...this.state.comments, data[0]] }, () => console.log('posted: ', data)))
-    .then(() => console.log("comments: " + this.state.comments));
+    .then(() => console.log("comments: " + this.state.comments))
+    .then(() => this.setState({comment: ""}));
   }
 
   deleteComment = comment => {
