@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Comic from './Comic/Comic';
 import CommentArea from './CommentArea/CommentArea';
 import ComicSearch from './ComicSearch/ComicSearch';
+import FavoritesArea from './FavoritesArea/FavoritesArea';
 import './App.css';
 import Axios from 'axios';
 
@@ -12,9 +13,10 @@ class App extends Component {
     this.state = {
       comic: [],
       comicNumber: '',
-      error: '',
       comments: [],
-      comment: ''
+      comment: '',
+      error: '',
+      favorites: []
     };
   }
 
@@ -44,7 +46,7 @@ class App extends Component {
       console.error('Error:', error);
       this.setState({error: 'ERROR: Comic #' + comicNumber + ' not found'});
     });
-  }  
+  } 
 
   addComment = comment => {
     fetch("/addComment/", {   
@@ -57,6 +59,34 @@ class App extends Component {
     .then(data => this.setState({ comments: [...this.state.comments, data[0]] }, () => console.log('posted: ', data)))
     .then(() => console.log("comments: " + this.state.comments))
     .then(() => this.setState({comment: ''}))
+  }
+    
+  favoriteComic = comic => {
+    if(this.state.favorites.includes(comic)) {
+      console.log('inludes');
+    }
+    fetch("/favoriteComic/", {   
+      method: 'POST',
+      body: JSON.stringify({
+        fav: comic
+      }),
+      headers: {"Content-Type": "application/json"}})
+    .then(response => response.json())
+    .then(data => this.setState({ favorites: [...this.state.favorites, data[0]] }, () => console.log('posted: ', data)))
+    .then(() => console.log("favorites: " + this.state.favorites));
+  }
+
+  deleteFavoriteComic = comic => {
+    Axios.delete("/deleteFavoriteComic/" + comic).then(res =>
+      this.setState({
+        favorites: [...this.state.favorites.filter(fav => fav !== comic)]
+      })
+    );
+  }
+
+  comicSearchSubmit = (event) => {
+    this.getComic(this.state.comicNumber);
+    event.preventDefault();
   }
 
   deleteComment = comment => {
@@ -81,6 +111,11 @@ class App extends Component {
     return (
       <div className="App">
         <h1>bootleg xkcd</h1>
+        <FavoritesArea 
+          clickCreate={() => this.favoriteComic(this.state.comic.num)} 
+          clickDelete={() => this.deleteFavoriteComic(Number.parseFloat(this.state.comic.num))} 
+          favorites={this.state.favorites}
+          delFavorite={this.deleteFavoriteComic}/>
         <ComicSearch 
           comicSearchSubmit={this.comicSearchSubmit}
           error={this.state.error}
@@ -88,7 +123,6 @@ class App extends Component {
           onChange={this.onChange}
           getRandomComic={this.getRandomComic}
         />
-
         <Comic 
           img= {this.state.comic.img}
           alt= {this.state.comic.alt}
@@ -108,7 +142,6 @@ class App extends Component {
       </div>
     );
   }
-
 }
 
 export default App;
