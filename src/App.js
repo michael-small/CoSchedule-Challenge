@@ -67,6 +67,9 @@ class App extends Component {
 
   // COMMENT METHODS
   addComment = comment => {
+    if(comment==='') {
+      return;
+    }
     fetch("/addComment/", {   
       method: 'POST',
       body: JSON.stringify({

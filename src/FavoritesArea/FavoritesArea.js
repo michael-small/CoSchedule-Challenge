@@ -11,6 +11,7 @@ export class FavoritesArea extends Component {
         } else {
             favList = <span><b>Your favorites: you have no favorites!</b> </span>
         }
+        
         return (
             <div className="Favorites">
                 <button onClick={this.props.createFav}>Create Fav <span role="img" aria-label="Heart">❤️</span></button>
