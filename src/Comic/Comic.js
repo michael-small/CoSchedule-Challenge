@@ -1,15 +1,23 @@
-import React from 'react';
+import React, {Component} from 'react';
 import './Comic.css';
 
-const comic = (props) => {
-    return (
-        <div className="Comic">
-            <h2>Comic title will go here</h2>
-            <p>More info on the comic, including its picture, will go below.</p>
-            <p>Here is the comic from July 7, 2020. Hardcoded in for reference before working on the API.</p>
-            <img src="https://imgs.xkcd.com/comics/universal_rating_scale.png" alt="Comic from July 7, 2020" />
-        </div>
-    )
+export class Comic extends Component {
+
+    render () {
+        return (
+            <div className="Comic">
+                <h2>Comic #{this.props.num} ({this.props.month}/{this.props.day}/{this.props.year})</h2>
+                <h1>{this.props.title}</h1>
+                <img 
+                    src={this.props.img} 
+                    alt={this.props.alt} 
+                    title={this.props.alt}/> {/* Randall Munroe uses the alt text as the text that shows on hover, but `title` is the <img> property to do that */}
+                <br/>
+                <p>Link to comic: <a href={'https://xkcd.com/' + this.props.num +'/'}>{'https://xkcd.com/' + this.props.num +'/'}</a></p>
+            </div>
+        )
+    }
+
 }
 
-export default comic;
+export default Comic;

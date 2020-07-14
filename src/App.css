@@ -36,3 +36,7 @@
     transform: rotate(360deg);
   }
 }
+
+input, button {
+  font-size: 1.5rem;
+}
