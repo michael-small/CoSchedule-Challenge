@@ -9,7 +9,7 @@ class CommentArea extends Component {
             <div style={{'marginBottom': '1rem'}}>
                 <h2>Comments</h2>
                 <div className="commentArea">
-                    <form onSubmit={this.props.clickCreate} className="comicSearch"> {/* TODO: Break out into own component */}
+                    <form onSubmit={this.props.createComment} className="comicSearch">
                         <textarea 
                             type="text" 
                             name="comment" 

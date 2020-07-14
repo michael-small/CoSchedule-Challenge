@@ -136,9 +136,9 @@ class App extends Component {
         <h1>bootleg xkcd</h1>
         <FavoritesArea 
           favorites={this.state.favorites}
-          clickCreate={() => this.favoriteComic(this.state.comic.num)} 
-          clickDelete={() => this.deleteFavoriteComic(Number.parseFloat(this.state.comic.num))} 
-          delFavorite={this.deleteFavoriteComic}
+          createFav={() => this.favoriteComic(this.state.comic.num)} 
+          deleteFav={() => this.deleteFavoriteComic(Number.parseFloat(this.state.comic.num))} 
+          delFavFromFavsCollection={this.deleteFavoriteComic}
           />
         <ComicSearch 
           error={this.state.error}
@@ -159,9 +159,9 @@ class App extends Component {
         <CommentArea 
           comment={this.state.comment}
           comments={this.state.comments}
-          onChange={this.onChange}
-          clickCreate={this.commentSubmit} 
-          delComment={this.deleteComment}/>
+          createComment={this.commentSubmit} 
+          delComment={this.deleteComment}
+          onChange={this.onChange}/>
       </div>
     );
   }
