@@ -12,7 +12,7 @@ class App extends Component {
     super();
     this.state = {
       comic: [],
-      comicNumber: '',
+      comicSearchNumber: '',
       comments: [],
       comment: '',
       error: '',
@@ -31,7 +31,7 @@ class App extends Component {
   }
 
   comicSearchSubmit = (event) => {
-    this.getComic(this.state.comicNumber);
+    this.getComic(this.state.comicSearchNumber);
     event.preventDefault();
   }  
 
@@ -42,6 +42,7 @@ class App extends Component {
     fetch(comicUrl) 
     .then(res => res.json())
     .then(comic => this.setState({comic: comic}, () => console.log('comic fetched...', comic)))
+    .then(() => this.setState({comicSearchNumber: ''}))
     .catch((error) => {
       console.error('Error:', error);
       this.setState({error: 'ERROR: Comic #' + comicNumber + ' not found'});
@@ -93,7 +94,17 @@ class App extends Component {
   }
 
   comicSearchSubmit = (event) => {
-    this.getComic(this.state.comicNumber);
+    this.getComic(this.state.comicSearchNumber);
+    event.preventDefault();
+  }  
+  
+  nextComic = (event) => {
+    this.getComic(parseInt(this.state.comic.num) + 1);
+    event.preventDefault();
+  }  
+  
+  prevComic = (event) => {
+    this.getComic(parseInt(this.state.comic.num) - 1);
     event.preventDefault();
   }
 
@@ -126,8 +137,10 @@ class App extends Component {
           delFavorite={this.deleteFavoriteComic}/>
         <ComicSearch 
           comicSearchSubmit={this.comicSearchSubmit}
+          nextComic={this.nextComic}
+          prevComic={this.prevComic}
           error={this.state.error}
-          comicNumber={this.state.comicNumber}
+          comicSearchNumber={this.state.comicSearchNumber}
           onChange={this.onChange}
           getRandomComic={this.getRandomComic}
         />
