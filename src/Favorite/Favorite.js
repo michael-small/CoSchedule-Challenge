@@ -5,10 +5,10 @@ export class Favorite extends Component {
 
     render () {
         return (
-            <div className="Favorite">
+            <span className="Favorite">
                 {this.props.favorite}
-                <button onClick={this.props.delFavorite.bind(this, this.props.favorite)}>X</button>
-            </div>
+                <button onClick={this.props.delFavFromFavsCollection.bind(this, this.props.favorite)}>X</button>
+            </span>
         )
     }
 }

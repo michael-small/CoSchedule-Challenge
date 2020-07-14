@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Comic from './Comic/Comic';
-import CommentArea from './CommentArea/CommentArea';
 import ComicSearch from './ComicSearch/ComicSearch';
+import CommentArea from './CommentArea/CommentArea';
 import FavoritesArea from './FavoritesArea/FavoritesArea';
-import './App.css';
 import Axios from 'axios';
+import './App.css';
 
 class App extends Component {
 
@@ -12,17 +12,37 @@ class App extends Component {
     super();
     this.state = {
       comic: [],
-      comicNumber: '',
+      comicSearchNumber: '',
       comments: [],
       comment: '',
-      error: '',
-      favorites: []
+      favorites: [],
+      error: ''
     };
   }
 
   componentDidMount() {
-    this.getComic('2330');
+    this.getComic('1346');
   }
+
+  // COMIC METHODS
+  getComic = comicNumber => {
+    let comicUrl = '/comic/' + comicNumber;
+    this.setState({error: ''});
+    
+    fetch(comicUrl) 
+    .then(res => res.json())
+    .then(comic => this.setState({comic: comic}, () => console.log('comic fetched...', comic)))
+    .then(() => this.setState({comicSearchNumber: ''}))
+    .catch((error) => {
+      console.error('Error:', error);
+      this.setState({error: 'ERROR: Comic #' + comicNumber + ' not found'});
+    });
+  } 
+
+  comicSearchSubmit = (event) => {
+    this.getComic(this.state.comicSearchNumber);
+    event.preventDefault();
+  }  
 
   getRandomComic = (event) => {
     let random = Math.floor(Math.random() * Math.floor(2330));
@@ -31,24 +51,25 @@ class App extends Component {
   }
 
   comicSearchSubmit = (event) => {
-    this.getComic(this.state.comicNumber);
+    this.getComic(this.state.comicSearchNumber);
     event.preventDefault();
   }  
+  
+  nextComic = (event) => {
+    this.getComic(parseInt(this.state.comic.num) + 1);
+    event.preventDefault();
+  }  
+  
+  prevComic = (event) => {
+    this.getComic(parseInt(this.state.comic.num) - 1);
+    event.preventDefault();
+  }
 
-  getComic = comicNumber => {
-    let comicUrl = '/comic/' + comicNumber;
-    this.setState({error: ''});
-    
-    fetch(comicUrl) 
-    .then(res => res.json())
-    .then(comic => this.setState({comic: comic}, () => console.log('comic fetched...', comic)))
-    .catch((error) => {
-      console.error('Error:', error);
-      this.setState({error: 'ERROR: Comic #' + comicNumber + ' not found'});
-    });
-  } 
-
+  // COMMENT METHODS
   addComment = comment => {
+    if(comment==='') {
+      return;
+    }
     fetch("/addComment/", {   
       method: 'POST',
       body: JSON.stringify({
@@ -56,37 +77,13 @@ class App extends Component {
       }),
       headers: {"Content-Type": "application/json"}})
     .then(response => response.json())
-    .then(data => this.setState({ comments: [...this.state.comments, data[0]] }, () => console.log('posted: ', data)))
+    .then(data => this.setState({ comments: [...this.state.comments, data[0]] }))
     .then(() => console.log("comments: " + this.state.comments))
     .then(() => this.setState({comment: ''}))
-  }
-    
-  favoriteComic = comic => {
-    if(this.state.favorites.includes(comic)) {
-      console.log('inludes');
-    }
-    fetch("/favoriteComic/", {   
-      method: 'POST',
-      body: JSON.stringify({
-        fav: comic
-      }),
-      headers: {"Content-Type": "application/json"}})
-    .then(response => response.json())
-    .then(data => this.setState({ favorites: [...this.state.favorites, data[0]] }, () => console.log('posted: ', data)))
-    .then(() => console.log("favorites: " + this.state.favorites));
-  }
-
-  deleteFavoriteComic = comic => {
-    Axios.delete("/deleteFavoriteComic/" + comic).then(res =>
-      this.setState({
-        favorites: [...this.state.favorites.filter(fav => fav !== comic)]
-      })
-    );
-  }
-
-  comicSearchSubmit = (event) => {
-    this.getComic(this.state.comicNumber);
-    event.preventDefault();
+    .catch((error) => {
+      console.error('Error:', error);
+      this.setState({error: 'ERROR: cannot add comment'});
+    });
   }
 
   deleteComment = comment => {
@@ -102,9 +99,38 @@ class App extends Component {
     event.preventDefault();
   }
 
-  onChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-    e.preventDefault();
+  // FAVORITE METHODS
+  favoriteComic = comic => {
+    if(this.state.favorites.includes(comic)) {
+      return;
+    }
+    fetch("/favoriteComic/", {   
+      method: 'POST',
+      body: JSON.stringify({
+        fav: comic
+      }),
+      headers: {"Content-Type": "application/json"}})
+    .then(response => response.json())
+    .then(data => this.setState({ favorites: [...this.state.favorites, data[0]] }))
+    .then(() => console.log("favorites: " + this.state.favorites))
+    .catch((error) => {
+      console.error('Error:', error);
+      this.setState({error: 'ERROR: Could not favorite this comic'});
+    });
+  }
+
+  deleteFavoriteComic = comic => {
+    Axios.delete("/deleteFavoriteComic/" + comic).then(res =>
+      this.setState({
+        favorites: [...this.state.favorites.filter(fav => fav !== comic)]
+      })
+    );
+  }
+
+  // MISC METHODS
+  onChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
+    event.preventDefault();
   }
 
   render () {
@@ -112,33 +138,33 @@ class App extends Component {
       <div className="App">
         <h1>bootleg xkcd</h1>
         <FavoritesArea 
-          clickCreate={() => this.favoriteComic(this.state.comic.num)} 
-          clickDelete={() => this.deleteFavoriteComic(Number.parseFloat(this.state.comic.num))} 
           favorites={this.state.favorites}
-          delFavorite={this.deleteFavoriteComic}/>
+          createFav={() => this.favoriteComic(this.state.comic.num)} 
+          deleteFav={() => this.deleteFavoriteComic(Number.parseFloat(this.state.comic.num))} 
+          delFavFromFavsCollection={this.deleteFavoriteComic}
+          />
         <ComicSearch 
-          comicSearchSubmit={this.comicSearchSubmit}
           error={this.state.error}
-          comicNumber={this.state.comicNumber}
-          onChange={this.onChange}
+          comicSearchNumber={this.state.comicSearchNumber}
+          comicSearchSubmit={this.comicSearchSubmit}
           getRandomComic={this.getRandomComic}
-        />
+          nextComic={this.nextComic}
+          prevComic={this.prevComic}
+          onChange={this.onChange}/>
         <Comic 
-          img= {this.state.comic.img}
-          alt= {this.state.comic.alt}
-          title= {this.state.comic.title}
-          num= {this.state.comic.num}
-          month= {this.state.comic.month}
-          day= {this.state.comic.day}
-          year= {this.state.comic.year}
-        />
+          img={this.state.comic.img}
+          alt={this.state.comic.alt}
+          title={this.state.comic.title}
+          num={this.state.comic.num}
+          month={this.state.comic.month}
+          day={this.state.comic.day}
+          year={this.state.comic.year}/>
         <CommentArea 
           comment={this.state.comment}
-          onChange={this.onChange}
-          clickCreate={this.commentSubmit} 
           comments={this.state.comments}
-          delComment={this.deleteCommic}
-        />
+          createComment={this.commentSubmit} 
+          delComment={this.deleteComment}
+          onChange={this.onChange}/>
       </div>
     );
   }

@@ -23,4 +23,8 @@
 
 ::-webkit-input-placeholder {
     font-size: 1.5rem;
-  }
+}
+
+.addComment {
+    margin: 1rem;
+}
