@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Comic from './Comic/Comic';
-import CommentArea from './CommentArea/CommentArea';
 import ComicSearch from './ComicSearch/ComicSearch';
+import CommentArea from './CommentArea/CommentArea';
 import FavoritesArea from './FavoritesArea/FavoritesArea';
-import './App.css';
 import Axios from 'axios';
+import './App.css';
 
 class App extends Component {
 
@@ -15,8 +15,8 @@ class App extends Component {
       comicSearchNumber: '',
       comments: [],
       comment: '',
-      error: '',
-      favorites: []
+      favorites: [],
+      error: ''
     };
   }
 
@@ -125,9 +125,9 @@ class App extends Component {
   }
 
   // MISC METHODS
-  onChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-    e.preventDefault();
+  onChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
+    event.preventDefault();
   }
 
   render () {

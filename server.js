@@ -38,42 +38,40 @@ app.get('/comic/:id', function(req, res) {
 	if (!comic) {
 		res.send('Comic not found', 404);
 	} else {
-		res.send({img: comic.img, alt: comic.alt, title: comic.title, month: comic.month, day: comic.day, year: comic.year, num: comic.num});
-		// console.log("Retreived comic #" + comic.num + ' (' + comic.month + '/' + comic.day + '/' + comic.year + ')')
+		res.send({
+			img: comic.img, 
+			alt: comic.alt, 
+			title: comic.title, 
+			month: comic.month, 
+			day: comic.day, 
+			year: comic.year, 
+			num: comic.num
+		});
 	}
 });
 
 app.post('/addComment', function(req, res) {
 	let comment = req.body.com;
-	console.log("comment added: " + comment);
 	res.send([comment]);
 	res.end("yes");
 });
 
 app.delete('/deleteComment/:id', function(req, res) {
 	let com = req.body.id;
-	console.log("comment deleted: " + com);
 	res.json({com});
 	res.end("yes");
 });
 
-var favorites = [];
 
 app.post('/favoriteComic', function(req, res) {
 	let fav = req.body.fav;
-	favorites.push(fav);
-	favorites = favorites.map(Number); //TODO: fix
-	favorites.sort();
 	res.send([fav]);
-	console.log("favorites after adding: " + favorites);
 	res.end("yes");
 });
 
 app.delete('/deleteFavoriteComic/:id', function(req, res) {
 	let fav = req.body.id;
-	
 	res.json({fav});
-	
 	res.end("yes");
 });
 
