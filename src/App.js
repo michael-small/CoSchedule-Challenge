@@ -31,7 +31,7 @@ class App extends Component {
     
     fetch(comicUrl) 
     .then(res => res.json())
-    .then(comic => this.setState({comic: comic}, () => console.log('comic fetched...', comic)))
+    .then(comic => this.setState({comic: comic}))
     .then(() => this.setState({comicSearchNumber: ''}))
     .catch((error) => {
       console.error('Error:', error);
@@ -78,7 +78,6 @@ class App extends Component {
       headers: {"Content-Type": "application/json"}})
     .then(response => response.json())
     .then(data => this.setState({ comments: [...this.state.comments, data[0]] }))
-    .then(() => console.log("comments: " + this.state.comments))
     .then(() => this.setState({comment: ''}))
     .catch((error) => {
       console.error('Error:', error);
@@ -112,7 +111,6 @@ class App extends Component {
       headers: {"Content-Type": "application/json"}})
     .then(response => response.json())
     .then(data => this.setState({ favorites: [...this.state.favorites, data[0]] }))
-    .then(() => console.log("favorites: " + this.state.favorites))
     .catch((error) => {
       console.error('Error:', error);
       this.setState({error: 'ERROR: Could not favorite this comic'});
