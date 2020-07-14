@@ -24,17 +24,7 @@ class App extends Component {
     this.getComic('1346');
   }
 
-  getRandomComic = (event) => {
-    let random = Math.floor(Math.random() * Math.floor(2330));
-    this.getComic(random)
-    event.preventDefault();
-  }
-
-  comicSearchSubmit = (event) => {
-    this.getComic(this.state.comicSearchNumber);
-    event.preventDefault();
-  }  
-
+  // COMIC METHODS
   getComic = comicNumber => {
     let comicUrl = '/comic/' + comicNumber;
     this.setState({error: ''});
@@ -49,6 +39,33 @@ class App extends Component {
     });
   } 
 
+  comicSearchSubmit = (event) => {
+    this.getComic(this.state.comicSearchNumber);
+    event.preventDefault();
+  }  
+
+  getRandomComic = (event) => {
+    let random = Math.floor(Math.random() * Math.floor(2330));
+    this.getComic(random)
+    event.preventDefault();
+  }
+
+  comicSearchSubmit = (event) => {
+    this.getComic(this.state.comicSearchNumber);
+    event.preventDefault();
+  }  
+  
+  nextComic = (event) => {
+    this.getComic(parseInt(this.state.comic.num) + 1);
+    event.preventDefault();
+  }  
+  
+  prevComic = (event) => {
+    this.getComic(parseInt(this.state.comic.num) - 1);
+    event.preventDefault();
+  }
+
+  // COMMENT METHODS
   addComment = comment => {
     fetch("/addComment/", {   
       method: 'POST',
@@ -65,7 +82,21 @@ class App extends Component {
       this.setState({error: 'ERROR: cannot add comment'});
     });
   }
-    
+
+  deleteComment = comment => {
+    Axios.delete("/deleteComment/" + comment).then(res =>
+      this.setState({
+        comments: [...this.state.comments.filter(com => com !== comment)]
+      })
+    );
+  }
+
+  commentSubmit = (event) => {
+    this.addComment(this.state.comment);
+    event.preventDefault();
+  }
+
+  // FAVORITE METHODS
   favoriteComic = comic => {
     if(this.state.favorites.includes(comic)) {
       return;
@@ -93,34 +124,7 @@ class App extends Component {
     );
   }
 
-  comicSearchSubmit = (event) => {
-    this.getComic(this.state.comicSearchNumber);
-    event.preventDefault();
-  }  
-  
-  nextComic = (event) => {
-    this.getComic(parseInt(this.state.comic.num) + 1);
-    event.preventDefault();
-  }  
-  
-  prevComic = (event) => {
-    this.getComic(parseInt(this.state.comic.num) - 1);
-    event.preventDefault();
-  }
-
-  deleteComment = comment => {
-    Axios.delete("/deleteComment/" + comment).then(res =>
-      this.setState({
-        comments: [...this.state.comments.filter(com => com !== comment)]
-      })
-    );
-  }
-
-  commentSubmit = (event) => {
-    this.addComment(this.state.comment);
-    event.preventDefault();
-  }
-
+  // MISC METHODS
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
     e.preventDefault();
@@ -131,35 +135,33 @@ class App extends Component {
       <div className="App">
         <h1>bootleg xkcd</h1>
         <FavoritesArea 
+          favorites={this.state.favorites}
           clickCreate={() => this.favoriteComic(this.state.comic.num)} 
           clickDelete={() => this.deleteFavoriteComic(Number.parseFloat(this.state.comic.num))} 
-          favorites={this.state.favorites}
-          delFavorite={this.deleteFavoriteComic}/>
+          delFavorite={this.deleteFavoriteComic}
+          />
         <ComicSearch 
-          comicSearchSubmit={this.comicSearchSubmit}
-          nextComic={this.nextComic}
-          prevComic={this.prevComic}
           error={this.state.error}
           comicSearchNumber={this.state.comicSearchNumber}
-          onChange={this.onChange}
+          comicSearchSubmit={this.comicSearchSubmit}
           getRandomComic={this.getRandomComic}
-        />
+          nextComic={this.nextComic}
+          prevComic={this.prevComic}
+          onChange={this.onChange}/>
         <Comic 
-          img= {this.state.comic.img}
-          alt= {this.state.comic.alt}
-          title= {this.state.comic.title}
-          num= {this.state.comic.num}
-          month= {this.state.comic.month}
-          day= {this.state.comic.day}
-          year= {this.state.comic.year}
-        />
+          img={this.state.comic.img}
+          alt={this.state.comic.alt}
+          title={this.state.comic.title}
+          num={this.state.comic.num}
+          month={this.state.comic.month}
+          day={this.state.comic.day}
+          year={this.state.comic.year}/>
         <CommentArea 
           comment={this.state.comment}
+          comments={this.state.comments}
           onChange={this.onChange}
           clickCreate={this.commentSubmit} 
-          comments={this.state.comments}
-          delComment={this.deleteComment}
-        />
+          delComment={this.deleteComment}/>
       </div>
     );
   }
